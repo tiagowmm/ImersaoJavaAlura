@@ -30,7 +30,7 @@ import static com.diogonunes.jcolor.Attribute.*;
 public class LeituraAPIFilmeIMDB {
 
     private static final String TOP_250_MOVIE_IMDB_API = "https://imdb-api.com/pt/API/Top250Movies/";
-    private static final String TOP_250_MOVIE = "https://mocki.io/v1/9a7c1ca9-29b4-4eb3-8306-1adb9d159060";
+    public static final String TOP_250_MOVIE = "https://mocki.io/v1/9a7c1ca9-29b4-4eb3-8306-1adb9d159060";
     private static final String TOP_MOVIE = "https://alura-filmes.herokuapp.com/conteudos";
 
 
