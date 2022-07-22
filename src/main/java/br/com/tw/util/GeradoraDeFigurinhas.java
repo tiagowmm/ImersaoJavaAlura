@@ -1,11 +1,10 @@
 package br.com.tw.util;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.URL;
+import java.io.File;
+import java.io.InputStream;
 
 public class GeradoraDeFigurinhas {
 
