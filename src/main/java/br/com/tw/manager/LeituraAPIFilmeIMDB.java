@@ -1,21 +1,18 @@
-package br.com.tw;
+package br.com.tw.manager;
 
 
+import br.com.tw.enumeradores.EnderecoAPI;
 import br.com.tw.model.Catalogo;
 import br.com.tw.model.Endereco;
 import br.com.tw.model.Filme;
 import br.com.tw.service.CEPService;
-import br.com.tw.util.JsonParser;
+import br.com.tw.service.ClientHttp;
+import br.com.tw.service.JsonParser;
 import br.com.tw.util.PropertiesUtil;
 import com.diogonunes.jcolor.Attribute;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -29,23 +26,18 @@ import static com.diogonunes.jcolor.Attribute.*;
  */
 public class LeituraAPIFilmeIMDB {
 
-    private static final String TOP_250_MOVIE_IMDB_API = "https://imdb-api.com/pt/API/Top250Movies/";
-    public static final String TOP_250_MOVIE = "https://mocki.io/v1/9a7c1ca9-29b4-4eb3-8306-1adb9d159060";
-    private static final String TOP_MOVIE = "https://alura-filmes.herokuapp.com/conteudos";
-
-
-    public static void main( String[] args ) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         // 1-  Colocar a chave da API do IMDB em algum lugar fora do código como um arquivo de configuração
         // (p. ex, um arquivo .properties) ou uma variável de ambiente
 
-        PropertiesUtil propriesdades = new PropertiesUtil();
-        String apiKey = propriesdades.obterApiKey();
+        PropertiesUtil propriesdades = PropertiesUtil.newPropertiesUtil();
+        String apiKey = propriesdades.getAPIKey();
         System.out.println(apiKey);
 
         //  2 - Consumir o endpoint de filmes mais populares da API do IMDB.
 
-        String json = enviarRequisicao(TOP_250_MOVIE);
+        String json = new ClientHttp().buscarDados(EnderecoAPI.TOP_250_MOVIE_FULL.getEndereco());
         System.out.println(json);
 
         // 3 - Mudar o JsonParser para usar uma biblioteca de parsing de JSON como Jackson ou GSON
@@ -107,7 +99,7 @@ public class LeituraAPIFilmeIMDB {
     }
 
     private static void listarTop250Filmes() throws IOException, InterruptedException {
-        String resposta = enviarRequisicao(TOP_MOVIE);
+        String resposta = new ClientHttp().buscarDados(EnderecoAPI.TOP_250_MOVIE.getEndereco());
         System.out.println(resposta);
 
         JsonParser parserJson = new JsonParser();
@@ -133,14 +125,7 @@ public class LeituraAPIFilmeIMDB {
         System.out.println(endereco);
     }
 
-    private static String enviarRequisicao(String url) throws IOException, InterruptedException {
-        var client  = HttpClient.newHttpClient();
-        URI endereco = URI.create(url);
-        var request = HttpRequest.newBuilder(endereco).GET().build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        String body = response.body();
-        return body;
-    }
+
 
 
 //    public static void main(String...args) {

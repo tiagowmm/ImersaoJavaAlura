@@ -1,63 +1,49 @@
 package br.com.tw;
 
-import br.com.tw.model.Catalogo;
-import br.com.tw.model.Filme;
-import br.com.tw.util.GeradoraDeFigurinhas;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import br.com.tw.enumeradores.EnderecoAPI;
+import br.com.tw.manager.ExtratorDeConteudo;
+import br.com.tw.manager.ExtratorDeConteudoIMDB;
+import br.com.tw.manager.ExtratorDeConteudoNasa;
+import br.com.tw.model.Conteudo;
+import br.com.tw.service.ClientHttp;
+import br.com.tw.service.GeradoraDeFigurinhas;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.util.List;
 
-import static com.diogonunes.jcolor.Ansi.colorize;
 
 public class App {
 
 
     public static void main(String[] args) throws Exception {
 
-        String json = enviarRequisicao(LeituraAPIFilmeIMDB.TOP_250_MOVIE);
+        String json = new ClientHttp().buscarDados(EnderecoAPI.TOP_250_MOVIE_FULL.getEndereco());
 
-        ObjectMapper mapper = new ObjectMapper();
-        Catalogo catalogo = mapper.readValue(json, Catalogo.class);
+        ExtratorDeConteudo extrator = new ExtratorDeConteudoIMDB();
+        List<Conteudo> conteudos = extrator.extrairConteudo(json);
 
-        for (Filme filme : catalogo.getItems()) {
+//        String json = new ClientHttp().buscarDados(EnderecoAPI.NASA_DEMO_API.getEndereco());
+//
+//        ExtratorDeConteudo extrator = new ExtratorDeConteudoNasa();
+//        List<Conteudo> conteudos = extrator.extrairConteudo(json);
 
-            String titulo = filme.getTitle();
-            String urlImagem = filme.getImage();
+        for (Conteudo conteudo : conteudos) {
+            String titulo = conteudo.getTitle();
+            String urlImagem = conteudo.getUrlImage();
             String nomeArquivo = titulo + ".png";
+
+            System.out.println("Título: \u001b[1m" + titulo + "\u001b[m");
+            System.out.println("Poster: \u001b[1m" + urlImagem + "\u001b[m");
+            System.out.println("\n");
 
             InputStream inputStream = new URL(urlImagem).openStream();
             GeradoraDeFigurinhas geradora = new GeradoraDeFigurinhas();
             geradora.cria(inputStream, nomeArquivo);
 
-            System.out.println("Título: \u001b[1m" + titulo + "\u001b[m");
-            System.out.println("Poster: \u001b[1m" + urlImagem + "\u001b[m");
-            System.out.println("Classificação: " + filme.getImDbRating());
-
-            double rating = Double.valueOf(filme.getImDbRating());
-            long classificacao = Math.round(rating);
-
-            for( int i = 0; i < classificacao; i++) {
-                System.out.print("⭐");
-            }
-            System.out.println("\n");
         }
 
     }
 
-
-    private static String enviarRequisicao(String url) throws IOException, InterruptedException {
-        var client  = HttpClient.newHttpClient();
-        URI endereco = URI.create(url);
-        var request = HttpRequest.newBuilder(endereco).GET().build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        String body = response.body();
-        return body;
-    }
 
 }

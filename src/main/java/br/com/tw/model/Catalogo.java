@@ -3,9 +3,13 @@ package br.com.tw.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Catalogo {
+/**
+ *
+ */
+public class Catalogo implements Modelo {
 
     private String errorMessage;
+
     private List<Filme> items = new ArrayList<>();
 
 
