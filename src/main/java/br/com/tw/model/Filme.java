@@ -1,6 +1,6 @@
 package br.com.tw.model;
 
-public class Filme {
+public class Filme implements Modelo {
 
     private String id;
     private String rank;

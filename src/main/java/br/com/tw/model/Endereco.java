@@ -1,8 +1,6 @@
 package br.com.tw.model;
 
-import java.io.Serializable;
-
-public class Endereco implements Serializable {
+public class Endereco implements Modelo {
 
     private String cep;
     private String logradouro;
