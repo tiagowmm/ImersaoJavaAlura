@@ -9,6 +9,12 @@
 ### 
 
 
+- #imersaojava
+- #alura
+- #stikers
+- #aluramovies
+
+#imersaojava
 
 
 ###### Referências:
@@ -39,16 +45,17 @@
 
 [Documentação da abstração InputStream](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/InputStream.html)
 
-[]()
-[]()
+[](https://start.spring.io/)
+
+[](https://spring.io/)
 
 [OpenCV](https://github.com/opencv-java)
 
-[]()
+[Logos](https://github.com/abrahamcalf/programming-languages-logos)
 
-[]()
+[](https://mkyong.com/tutorials/spring-boot-tutorials/)
 
-[]()
+[](https://mkyong.com/spring-boot/spring-rest-hello-world-example/)
 
 []()
 
